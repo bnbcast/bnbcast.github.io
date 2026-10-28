@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Your Name – Junior Developer</title>
+    <title>Zaky Azhari – Junior Developer</title>
     <meta
       name="description"
-      content="Portfolio of a junior developer: C++, Python, JavaScript, React, Vue."
+      content="Portfolio of Zaky Azhari featuring interactive JavaScript tools, statistical explainers, a preventive maintenance scheduler, an MPU-6050 + ESP32 motion lab, and CAD project showcases."
     />
+    <meta name="theme-color" content="#0e1014" />
     <link
       rel="icon"
       type="image/svg+xml"
@@ -626,8 +627,9 @@
         <div class="wrap">
           <h2>Projects</h2>
           <p class="sub">
-            Each one runs live. Open the demo to try it here, or visit the
-            deployed app.
+            Browse deployed demos and source code. Interactive previews load as
+            needed; projects that simulate sensor readings or hardware controls
+            are labeled clearly.
           </p>
           <div class="tools">
             <input
@@ -722,10 +724,10 @@
       const CONFIG = {
         name: "Zaky Azhari",
         role: "Junior Developer",
-        headline: "I build things that run, then explain how.",
+        headline: "I build practical tools—and show how they work.",
         pitch:
-          "Junior developer with a maintenance-engineering background. I build small, finished web tools you can try in the browser, from schedulers to stats explainers.",
-        status: "Open to software development roles",
+          "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. I care about clear interfaces, useful logic, and honest demos you can try.",
+        status: "Open to junior software and technical roles",
         accent: "#7c8cff",
         theme: "dark",
         liveThumbs: true, // project cards show a live, scaled preview of the deployed site
@@ -733,7 +735,8 @@
         sections: ["projects", "activity", "skills", "about", "contact"],
         links: {
           github: "https://github.com/bnbcast",
-          linkedin: "https://linkedin.com/in/yourname",
+          // Add the real LinkedIn URL when ready. Empty links are not rendered.
+          linkedin: "",
           email: "zakyazhari393@gmail.com",
         },
         /* featured:true = shown first with a badge. thumb:false = no live thumbnail (use for sites that block embedding or sleep). */
@@ -778,6 +781,19 @@
             },
           },
           {
+            featured: true,
+            title: "MPU-6050 + ESP32 Motion Lab",
+            problem:
+              "Explore a virtual MPU-6050 in 3D, rotate and shake the board, inspect simulated accelerometer and gyroscope readings, and learn how the ESP32 sensor sketch and separate Control Center fit together.",
+            stack: ["JavaScript", "Three.js", "ESP32", "Sensor simulation"],
+            repo: "https://github.com/bnbcast/MPU6050",
+            image: "",
+            demo: {
+              type: "iframe",
+              url: "https://bnbcast.github.io/MPU6050/",
+            },
+          },
+          {
             title: "Autodesk Inventor Part Showcase",
             problem:
               "A showcase page for a part I modelled while learning Autodesk Inventor, with sketch, features and specs.",
@@ -791,25 +807,30 @@
           },
         ],
         skills: {
-          Languages: ["JavaScript", "HTML & CSS", "Python", "C++"],
+          "Languages & web": ["JavaScript", "HTML & CSS", "Python", "C++"],
           Concepts: [
             "Probability & statistics",
             "Data visualization",
             "Scheduling logic",
+            "3D visualization",
+            "Sensor simulation",
+            "Embedded systems basics",
           ],
-          Tools: [
+          "Tools & platforms": [
             "Git & GitHub",
             "GitHub Pages",
             "VS Code",
+            "Three.js",
+            "ESP32 / Arduino",
             "Autodesk Inventor",
           ],
         },
         about: [
-          "I come from a maintenance-engineering background, where the work lived in spreadsheets and schedules. I got into code by asking how to make those tools faster to use and easier to understand.",
-          "I like projects where a clear idea becomes a working page: pick a problem, explain the math, ship it with a live demo.",
+          "I'm a software engineering graduate who enjoys turning practical problems into small, usable tools. My projects range from scheduling and statistical explainers to interactive 3D simulations and embedded-system dashboards.",
+          "I focus on making the underlying logic understandable: a useful demo should be interactive, explain its assumptions, and make clear what's simulated versus connected to real hardware.",
         ],
         learning:
-          "Currently learning: C++ and Python, and how to turn them into browser demos.",
+          "Currently learning: C++ and Python, embedded systems, and interactive browser-based visualization.",
       };
       /* ============================================================ */
 
@@ -877,13 +898,15 @@
               textContent: "View projects",
             })
           : "",
-        el("a", {
-          className: "btn",
-          href: C.links.linkedin,
-          target: "_blank",
-          rel: "noopener",
-          textContent: "LinkedIn",
-        }),
+        C.links.linkedin
+          ? el("a", {
+              className: "btn",
+              href: C.links.linkedin,
+              target: "_blank",
+              rel: "noopener",
+              textContent: "LinkedIn",
+            })
+          : "",
         el("a", {
           className: "btn",
           href: C.links.github,
@@ -1269,7 +1292,7 @@
       $("mail").href = "mailto:" + C.links.email;
       $("mail").textContent = C.links.email;
       Object.entries(C.links)
-        .filter(([k]) => k !== "email")
+        .filter(([k, v]) => k !== "email" && Boolean(v))
         .forEach(([k, v]) =>
           $("links").append(
             el("a", {
