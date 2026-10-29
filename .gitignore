@@ -4,3 +4,5 @@ dist/
 .env
 .env.*
 !.env.example
+Commit-Portfolio.ps1
+Publish-Repo.ps1

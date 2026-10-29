@@ -17,37 +17,37 @@ $repositories = [ordered]@{
         Path = $workspace
         Remote = 'https://github.com/bnbcast/bnbcast.github.io'
         Message = 'Rebuild portfolio with React and Vite'
-        Paths = @('.env.example', '.gitignore', 'Commit-Portfolio.ps1', 'README.md', 'index.html', 'package-lock.json', 'package.json', 'src', 'vite.config.js')
+        Paths = @('.env.example', '.github/workflows/deploy-pages.yml', '.gitignore', 'Commit-Portfolio.ps1', 'README.md', 'index.html', 'package-lock.json', 'package.json', 'src', 'vite.config.js', 'vite.portfolio.config.js')
     }
     JadwalTahunanPM = @{
         Path = Join-Path $workspace 'BBPVP\JadwalTahunan-PM'
         Remote = 'https://github.com/bnbcast/JadwalTahunan-PM'
         Message = 'Convert maintenance scheduler to React'
-        Paths = @('.gitignore', 'Scheduler.jsx', 'index.html', 'machines.json', 'main.jsx', 'page.css')
+        Paths = @('.env.example', '.github/workflows/deploy-pages.yml', '.gitignore', 'Breadcrumb.jsx', 'Scheduler.jsx', 'index.html', 'machines.json', 'main.jsx', 'package-lock.json', 'package.json', 'page.css', 'vite.config.js')
     }
     MPU6050 = @{
         Path = Join-Path $workspace 'BBPVP\MPU6050'
         Remote = 'https://github.com/bnbcast/MPU6050'
         Message = 'Convert MPU-6050 motion lab to React'
-        Paths = @('.gitignore', 'MotionLab.jsx', 'index.html', 'main.jsx', 'page.css')
+        Paths = @('.env.example', '.github/workflows/deploy-pages.yml', '.gitignore', 'Breadcrumb.jsx', 'MotionLab.jsx', 'index.html', 'main.jsx', 'package-lock.json', 'package.json', 'page.css', 'vite.config.js')
     }
     AutodeskInventor = @{
         Path = Join-Path $workspace 'BBPVP\AutodeskInventor'
         Remote = 'https://github.com/bnbcast/2d-inventor'
         Message = 'Convert Inventor showcase to React'
-        Paths = @('.gitignore', 'InventorShowcase.jsx', 'index.html', 'main.jsx', 'page.css', 'part.json')
+        Paths = @('.env.example', '.github/workflows/deploy-pages.yml', '.gitignore', 'Breadcrumb.jsx', 'InventorShowcase.jsx', 'index.html', 'main.jsx', 'package-lock.json', 'package.json', 'page.css', 'part.json', 'vite.config.js')
     }
     InferenceTimeCalc = @{
         Path = Join-Path $workspace 'Stanfords\InferenceTimeCalc'
         Remote = 'https://github.com/bnbcast/InferenceTimeCalc'
         Message = 'Convert inference calculator to React'
-        Paths = @('.gitignore', 'InferenceTimeCalc.css', 'index.html')
+        Paths = @('.env.example', '.github/workflows/deploy-pages.yml', '.gitignore', 'Breadcrumb.jsx', 'Calculator.jsx', 'InferenceTimeCalc.css', 'index.html', 'main.jsx', 'package-lock.json', 'package.json', 'vite.config.js')
     }
     WordDetective = @{
         Path = Join-Path $workspace 'Stanfords\WordDetective'
         Remote = 'https://github.com/bnbcast/Word-Detective'
         Message = 'Convert Word Detective to React'
-        Paths = @('.gitignore', 'WordDetective.css', 'data.js', 'index.html')
+        Paths = @('.env.example', '.github/workflows/deploy-pages.yml', '.gitignore', 'Breadcrumb.jsx', 'WordDetective.css', 'WordDetective.jsx', 'data.js', 'index.html', 'main.jsx', 'package-lock.json', 'package.json', 'vite.config.js')
     }
 }
 
