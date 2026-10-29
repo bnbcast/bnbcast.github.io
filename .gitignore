@@ -6,3 +6,4 @@ dist/
 !.env.example
 Commit-Portfolio.ps1
 Publish-Repo.ps1
+test
