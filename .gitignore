@@ -1,9 +1,40 @@
+# Dependencies & Builds
 node_modules/
 dist/
-**/index.original.html
+build/
+.cache/
+
+# Local Dev & Python Environment
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# Local Config & Secrets
 .env
 .env.*
 !.env.example
-Commit-Portfolio.ps1
-Publish-Repo.ps1
-test
+
+# Temporary / Scratch Tools
+ai-agent-check/
+test/
+
+# Generated & Backup HTML
+**/index.original.html
+
+# PowerShell & Local Scripts
+*.ps1
+*.cmd
+*.bat
+
+# IDE & Editor State
+.vscode/*
+!.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+
+# Archives & Temp Zips
+*.zip
+*.tar.gz
+**/_archives/
