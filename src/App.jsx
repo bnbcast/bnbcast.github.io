@@ -8,8 +8,8 @@ const CONFIG = {
   name: "Zaky Azhari",
   role: "Junior Developer",
   headline: "I build practical tools—and show how they work.",
-  pitch:
-    "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its five project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
+    pitch:
+    "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its six project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
   status: "Open to junior software and technical roles",
   accent: "#7c8cff",
   theme: "dark",
@@ -75,6 +75,19 @@ const CONFIG = {
       },
     },
     {
+      featured: true,
+      title: "ESP32 ACS712 Current Monitor",
+      problem:
+        "A browser-based instrumentation lab that simulates an ESP32 reading current through an ACS712 Hall-effect sensor, with a 3D wiring bench built in Three.js, step-by-step experiment flow, and a Google Sheets logging pipeline.",
+      stack: ["React 19", "Vite 6", "Three.js", "ESP32", "Sensor simulation"],
+      repo: "https://github.com/bnbcast/ACS712-BBPVP",
+      image: "",
+      demo: {
+        type: "iframe",
+        url: "https://bnbcast.github.io/ACS712-BBPVP/",
+      },
+    },
+    {
       title: "Autodesk Inventor Part Showcase",
       problem:
         "A showcase page for a part I modelled while learning Autodesk Inventor, with sketch, features and specs.",
@@ -100,6 +113,7 @@ const CONFIG = {
     ],
     "Tools & platforms": [
       "Git & GitHub",
+      "GitHub Actions",
       "GitHub Pages",
       "VS Code",
       "Three.js",
@@ -534,7 +548,7 @@ function App() {
               <p className="sub">
                 Browse deployed demos and source code. Interactive previews load as
                 needed; projects that simulate sensor readings or hardware controls
-                are labeled clearly. The portfolio and all five project showcases
+                are labeled clearly. The portfolio and all six project showcases
                 are built with React 19 and Vite 6.
               </p>
               <div className="tools">
