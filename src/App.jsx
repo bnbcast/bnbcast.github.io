@@ -7,9 +7,9 @@ import {
 const CONFIG = {
   name: "Zaky Azhari",
   role: "Junior Developer",
-  headline: "I build practical tools—and show how they work.",
+  headline: "I build practical toolsâ€”and show how they work.",
     pitch:
-    "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its six project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
+    "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its eight project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
   status: "Open to junior software and technical roles",
   accent: "#7c8cff",
   theme: "dark",
@@ -22,6 +22,19 @@ const CONFIG = {
     email: "zakyazhari393@gmail.com",
   },
   projects: [
+    {
+      featured: true,
+      title: "ESP32 Live Telemetry Dashboard",
+      problem:
+        "Real hardware, end to end: an ESP32 DevKit running PlatformIO firmware reads ACS712 current, MPU-6050 tilt and a GPS fix, then publishes to an MQTT broker every 500 ms. A MapLibre dashboard subscribes in the browser and plots the live trail, speed, odometer, address lookup and link health.",
+      stack: ["C++", "PlatformIO", "ESP32", "MQTT", "MapLibre"],
+      repo: "https://github.com/bnbcast/esp32-monitoring-pio",
+      image: "",
+      demo: {
+        type: "iframe",
+        url: "https://bnbcast.github.io/esp32-monitoring-pio/",
+      },
+    },
     {
       featured: true,
       title: "Inference Time Calculator",
@@ -89,7 +102,7 @@ const CONFIG = {
     },
     {
       featured: true,
-      title: "The Daily Digest — Tech Newspaper",
+      title: "The Daily Digest â€” Tech Newspaper",
       problem:
         "A browser-based newspaper that consumes the daily Hacker News digest plus five niche tech sources (Lobste.rs, Ars Technica, Hackaday, Dev.to, Stack Overflow Blog), rendered in a classic multi-column newspaper layout with print-ready CSS.",
       stack: ["React 19", "Vite 6", "RSS", "GitHub Actions", "GitHub Pages"],
@@ -115,13 +128,14 @@ const CONFIG = {
   ],
   skills: {
     "Languages & web": ["JavaScript", "HTML & CSS", "Python", "C++"],
-    "Frameworks & build tools": ["React 19", "Vite 6", "npm"],
+    "Frameworks & build tools": ["React 19", "Vite 6", "npm", "PlatformIO"],
     Concepts: [
       "Probability & statistics",
       "Data visualization",
       "Scheduling logic",
       "3D visualization",
       "Sensor simulation",
+      "MQTT telemetry",
       "Embedded systems basics",
     ],
     "Tools & platforms": [
@@ -130,6 +144,7 @@ const CONFIG = {
       "GitHub Pages",
       "VS Code",
       "Three.js",
+      "MapLibre GL",
       "ESP32 / Arduino",
       "Autodesk Inventor",
     ],
@@ -142,7 +157,7 @@ const CONFIG = {
     "Currently learning: C++ and Python, embedded systems, and interactive browser-based visualization.",
 };
 
-const PROJECT_LIMIT = 6;
+const PROJECT_LIMIT = 7;
 
 function getInitialTheme() {
   try {
@@ -471,7 +486,7 @@ function App() {
   useEffect(() => {
     document.documentElement.style.setProperty("--accent", CONFIG.accent);
     document.documentElement.dataset.theme = theme;
-    document.title = `${CONFIG.name} – ${CONFIG.role}`;
+    document.title = `${CONFIG.name} â€“ ${CONFIG.role}`;
   }, [theme]);
 
   useEffect(() => {
@@ -520,7 +535,7 @@ function App() {
                 aria-label="Toggle light or dark theme"
                 onClick={toggleTheme}
               >
-                {theme === "dark" ? "☾" : "☀"}
+                {theme === "dark" ? "â˜¾" : "â˜€"}
               </button>
             </li>
           </ul>
@@ -561,7 +576,7 @@ function App() {
               <p className="sub">
                 Browse deployed demos and source code. Interactive previews load as
                 needed; projects that simulate sensor readings or hardware controls
-                are labeled clearly. The portfolio and all six project showcases
+                are labeled clearly. The portfolio and all eight project showcases
                 are built with React 19 and Vite 6.
               </p>
               <div className="tools">
@@ -672,7 +687,7 @@ function App() {
       </main>
 
       <footer>
-        <div className="wrap">© {new Date().getFullYear()} {CONFIG.name}</div>
+        <div className="wrap">Â© {new Date().getFullYear()} {CONFIG.name}</div>
       </footer>
 
       <dialog
@@ -707,8 +722,8 @@ function App() {
               src={demo.demo.url}
             />
             <div className="dnote">
-              If the demo stays blank, the site blocks embedding. Use “Open in new
-              tab”.
+              If the demo stays blank, the site blocks embedding. Use â€œOpen in new
+              tabâ€.
             </div>
           </>
         )}
