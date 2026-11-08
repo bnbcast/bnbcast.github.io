@@ -13,7 +13,7 @@ const CONFIG = {
   status: "Open to junior software and technical roles",
   accent: "#7c8cff",
   theme: "dark",
-  liveThumbs: true,
+  liveThumbs: false,
   activity: { username: githubUsername, max: 6 },
   sections: ["projects", "activity", "skills", "about", "contact"],
   links: {
@@ -182,33 +182,14 @@ function getInitialTheme() {
 
 function ProjectPreview({ project, onOpen }) {
   const previewRef = useRef(null);
-  const [visible, setVisible] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [iframeError, setIframeError] = useState(false);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
   const demo = project.demo;
 
   useEffect(() => {
-    if (!CONFIG.liveThumbs || project.thumb === false || !demo?.url) return;
-
     const target = previewRef.current;
     if (!target) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px" },
-    );
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, [demo?.url, project.thumb]);
-
-  useEffect(() => {
-    const target = previewRef.current;
-    if (!target || !visible) return;
 
     const iframe = target.querySelector("iframe");
     if (!iframe) return;
@@ -220,7 +201,7 @@ function ProjectPreview({ project, onOpen }) {
     const observer = new ResizeObserver(resize);
     observer.observe(target);
     return () => observer.disconnect();
-  }, [visible]);
+  }, []);
 
   let content;
   if (demo?.type === "video" && demo.url) {
@@ -251,11 +232,16 @@ function ProjectPreview({ project, onOpen }) {
             tabIndex={-1}
             aria-hidden="true"
             sandbox="allow-scripts allow-same-origin"
-            src={visible && !iframeError ? demo.url : undefined}
+            src={previewLoaded && !iframeError ? demo.url : undefined}
             className={loaded ? "on" : ""}
             onLoad={() => setLoaded(true)}
             onError={() => setIframeError(true)}
           />
+          {!previewLoaded && (
+            <div className="preview-placeholder" onClick={() => setPreviewLoaded(true)}>
+              <i class="fas fa-play-circle" style={{ color: "var(--accent)", cursor: "pointer" }} />
+            </div>
+          )}
           {iframeError && (
             <div className="iframe-fallback" style={{
               position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -362,41 +348,28 @@ function useActivity() {
       }
 
       try {
-        const request = async (path) => {
-          const response = await fetch(`https://api.github.com${path}`, {
-            headers: { Accept: "application/vnd.github+json" },
-          });
-          if (!response.ok) {
-            if (response.status === 403) {
-              const reset = response.headers.get("X-RateLimit-Reset");
-              const waitTime = reset ? Math.max(0, Math.ceil((reset * 1000 - Date.now()) / 60000)) : null;
-              throw new Error(waitTime ? `Rate limited. Try again in ~${waitTime} min.` : "GitHub API rate limit exceeded");
-            }
-            throw new Error(`GitHub API returned ${response.status}`);
+        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=pushed&per_page=${max}`, {
+          headers: { Accept: "application/vnd.github+json" },
+        });
+        if (!response.ok) {
+          if (response.status === 403) {
+            const reset = response.headers.get("X-RateLimit-Reset");
+            const waitTime = reset ? Math.max(0, Math.ceil((reset * 1000 - Date.now()) / 60000)) : null;
+            throw new Error(waitTime ? `Rate limited. Try again in ~${waitTime} min.` : "GitHub API rate limit exceeded");
           }
-          return response.json();
-        };
-        const repos = (await request(`/users/${username}/repos?sort=pushed&per_page=30`))
+          throw new Error(`GitHub API returned ${response.status}`);
+        }
+        const repos = await response.json();
+        const items = repos
           .filter((repo) => !repo.fork && !repo.archived)
-          .slice(0, max);
-        const items = await Promise.all(
-          repos.map(async (repo) => {
-            let text = repo.description || "Updated this repository";
-            let at = repo.pushed_at;
-            let href = repo.html_url;
-            try {
-              const [commit] = await request(`/repos/${repo.full_name}/commits?per_page=1`);
-              if (commit) {
-                text = commit.commit.message.split("\n")[0];
-                at = commit.commit.author?.date || at;
-                href = commit.html_url;
-              }
-            } catch {
-              // Keep repository metadata when an individual commit endpoint is unavailable.
-            }
-            return { repo: repo.name, repoUrl: repo.html_url, text, href, at };
-          }),
-        );
+          .slice(0, max)
+          .map((repo) => ({
+            repo: repo.name,
+            repoUrl: repo.html_url,
+            text: repo.description || "Updated this repository",
+            href: repo.html_url,
+            at: repo.pushed_at,
+          }));
         items.sort((a, b) => new Date(b.at) - new Date(a.at));
         if (items.length) {
           try {

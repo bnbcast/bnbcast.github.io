@@ -6,8 +6,8 @@
         --muted: #9aa0ad;
         --accent: #7c8cff;
         --on-accent: #0e1014;
-        --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-        --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+        --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       }
       :root[data-theme="light"] {
         --bg: #f7f7f5;
@@ -226,6 +226,20 @@
         border-radius: 99px;
         padding: 6px 14px;
         font: 500 13px var(--mono);
+      }
+      .preview-placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--accent);
+        font-size: 48px;
+        transition: color var(--transition);
+      }
+      .preview-placeholder:hover {
+        color: var(--accent-hover);
       }
       .preview iframe {
         position: absolute;
