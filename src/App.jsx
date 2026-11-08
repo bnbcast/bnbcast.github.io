@@ -7,7 +7,7 @@ import {
 const CONFIG = {
   name: "Zaky Azhari",
   role: "Junior Developer",
-  headline: "I build practical toolsâ€”and show how they work.",
+  headline: "I build practical tools—and show how they work.",
     pitch:
     "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its nine project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
   status: "Open to junior software and technical roles",
@@ -533,7 +533,7 @@ function App() {
   useEffect(() => {
     document.documentElement.style.setProperty("--accent", CONFIG.accent);
     document.documentElement.dataset.theme = theme;
-    document.title = `${CONFIG.name} â€“ ${CONFIG.role}`;
+    document.title = `${CONFIG.name} — ${CONFIG.role}`;
   }, [theme]);
 
   useEffect(() => {
@@ -773,8 +773,8 @@ function App() {
               }}
             />
             <div className="dnote">
-              If the demo stays blank, the site blocks embedding. Use â€œOpen in new
-              tabâ€.
+              If the demo stays blank, the site blocks embedding. Use “Open in new
+              tab”.
             </div>
           </>
         )}
