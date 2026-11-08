@@ -9,7 +9,7 @@ const CONFIG = {
   role: "Junior Developer",
   headline: "I build practical toolsâ€”and show how they work.",
     pitch:
-    "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its eight project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
+    "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its nine project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
   status: "Open to junior software and technical roles",
   accent: "#7c8cff",
   theme: "dark",
@@ -102,7 +102,7 @@ const CONFIG = {
     },
     {
       featured: true,
-      title: "The Daily Digest â€” Tech Newspaper",
+      title: "The Daily Digest — Tech Newspaper",
       problem:
         "A browser-based newspaper that consumes the daily Hacker News digest plus five niche tech sources (Lobste.rs, Ars Technica, Hackaday, Dev.to, Stack Overflow Blog), rendered in a classic multi-column newspaper layout with print-ready CSS.",
       stack: ["React 19", "Vite 6", "RSS", "GitHub Actions", "GitHub Pages"],
@@ -111,6 +111,19 @@ const CONFIG = {
       demo: {
         type: "iframe",
         url: "https://bnbcast.github.io/newspaper/",
+      },
+    },
+    {
+      featured: true,
+      title: "Moto G45 5G Bootloop Fix",
+      problem:
+        "Complete diagnosis and repair guide for the Moto G45 5G (XT2363-9, codename fogos) 2-minute bootloop caused by corrupt modem NV in modemst1/modemst2. Fix: unlock bootloader, fastboot erase modemst1 + modemst2, modem rebuilds NV from golden fsg partition. Verified stable with zero crashes, LTE working, IMEI intact.",
+      stack: ["Android", "Fastboot", "ADB", "Qualcomm", "Documentation"],
+      repo: "https://github.com/bnbcast/motorola-g45-bootlooping-keep-restarting-fix",
+      image: "",
+      demo: {
+        type: "link",
+        url: "https://bnbcast.github.io/motorola-g45-bootlooping-keep-restarting-fix/",
       },
     },
     {
@@ -171,6 +184,7 @@ function ProjectPreview({ project, onOpen }) {
   const previewRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [iframeError, setIframeError] = useState(false);
   const demo = project.demo;
 
   useEffect(() => {
@@ -231,15 +245,26 @@ function ProjectPreview({ project, onOpen }) {
     <div className="preview" ref={previewRef}>
       {content}
       {demo?.url && demo.type !== "video" && CONFIG.liveThumbs && project.thumb !== false && (
-        <iframe
-          title={`${project.title} live preview`}
-          tabIndex={-1}
-          aria-hidden="true"
-          sandbox="allow-scripts allow-same-origin"
-          src={visible ? demo.url : undefined}
-          className={loaded ? "on" : ""}
-          onLoad={() => setLoaded(true)}
-        />
+        <>
+          <iframe
+            title={`${project.title} live preview`}
+            tabIndex={-1}
+            aria-hidden="true"
+            sandbox="allow-scripts allow-same-origin"
+            src={visible && !iframeError ? demo.url : undefined}
+            className={loaded ? "on" : ""}
+            onLoad={() => setLoaded(true)}
+            onError={() => setIframeError(true)}
+          />
+          {iframeError && (
+            <div className="iframe-fallback" style={{
+              position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'var(--surface)', color: 'var(--muted)', fontSize: '13px', padding: '16px', textAlign: 'center'
+            }}>
+              Preview unavailable — click "Run live demo" to open in new tab
+            </div>
+          )}
+        </>
       )}
       {demo?.type === "iframe" && (
         <>
@@ -249,7 +274,7 @@ function ProjectPreview({ project, onOpen }) {
             aria-label={`Run live demo of ${project.title}`}
             onClick={() => onOpen(project)}
           />
-          <span className="play">Run live demo</span>
+          <span className="play">{iframeError ? "Open live demo" : "Run live demo"}</span>
         </>
       )}
       {demo?.type === "link" && demo.url && (
@@ -326,15 +351,29 @@ function useActivity() {
     }
 
     const load = async () => {
-      if (cached?.data?.length && Date.now() - cached.t < ttl) {
+      // Show cached data immediately (even if expired) while fetching fresh data
+      if (cached?.data?.length) {
         if (active) setActivity({ items: cached.data, status: "ready" });
+      }
+
+      // If cache is fresh, don't refetch
+      if (cached?.data?.length && Date.now() - cached.t < ttl) {
         return;
       }
 
       try {
         const request = async (path) => {
-          const response = await fetch(`https://api.github.com${path}`);
-          if (!response.ok) throw new Error(`GitHub API returned ${response.status}`);
+          const response = await fetch(`https://api.github.com${path}`, {
+            headers: { Accept: "application/vnd.github+json" },
+          });
+          if (!response.ok) {
+            if (response.status === 403) {
+              const reset = response.headers.get("X-RateLimit-Reset");
+              const waitTime = reset ? Math.max(0, Math.ceil((reset * 1000 - Date.now()) / 60000)) : null;
+              throw new Error(waitTime ? `Rate limited. Try again in ~${waitTime} min.` : "GitHub API rate limit exceeded");
+            }
+            throw new Error(`GitHub API returned ${response.status}`);
+          }
           return response.json();
         };
         const repos = (await request(`/users/${username}/repos?sort=pushed&per_page=30`))
@@ -367,13 +406,14 @@ function useActivity() {
           }
         }
         if (active) setActivity({ items, status: "ready" });
-      } catch {
+      } catch (err) {
         if (active) {
-          setActivity(
-            cached?.data
-              ? { items: cached.data, status: "ready" }
-              : { items: null, status: "error" },
-          );
+          // If we have cached data (even expired), show it with a warning
+          if (cached?.data?.length) {
+            setActivity({ items: cached.data, status: "warning", error: err.message });
+          } else {
+            setActivity({ items: null, status: "error", error: err.message });
+          }
         }
       }
     };
@@ -396,7 +436,7 @@ function timeAgo(date) {
 }
 
 function ActivitySection() {
-  const { items, status } = useActivity();
+  const { items, status, error } = useActivity();
   const profile = (
     <a href={githubProfileUrl} target="_blank" rel="noopener">
       See my GitHub profile
@@ -411,28 +451,35 @@ function ActivitySection() {
           Latest commits across my public repositories, pulled live from GitHub.
         </p>
         {items?.length ? (
-          <ul className="feed">
-            {items.map((item) => (
-              <li key={`${item.repo}-${item.at}`}>
-                <div className="meta">
-                  <a href={item.repoUrl} target="_blank" rel="noopener">
-                    {item.repo}
-                  </a>
-                  <span>Latest commit</span>
-                  <time dateTime={item.at}>{timeAgo(item.at)}</time>
-                </div>
-                <p className="msg">
-                  <a href={item.href} target="_blank" rel="noopener">
-                    {item.text}
-                  </a>
-                </p>
-              </li>
-            ))}
-          </ul>
+          <>
+            {status === "warning" && error && (
+              <p className="feednote" style={{ color: "var(--warning)", marginBottom: 16 }}>
+                ⚠️ Showing cached data. {error}
+              </p>
+            )}
+            <ul className="feed">
+              {items.map((item) => (
+                <li key={`${item.repo}-${item.at}`}>
+                  <div className="meta">
+                    <a href={item.repoUrl} target="_blank" rel="noopener">
+                      {item.repo}
+                    </a>
+                    <span>Latest commit</span>
+                    <time dateTime={item.at}>{timeAgo(item.at)}</time>
+                  </div>
+                  <p className="msg">
+                    <a href={item.href} target="_blank" rel="noopener">
+                      {item.text}
+                    </a>
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </>
         ) : status === "loading" ? null : (
           <p className="feednote">
             {status === "error"
-              ? "Couldn't load activity right now. "
+              ? `Couldn't load activity: ${error || "Unknown error"}. `
               : "No public repositories yet. "}
             {profile}
           </p>
@@ -718,8 +765,12 @@ function App() {
               ref={frameRef}
               title="Live demo"
               loading="lazy"
-              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
               src={demo.demo.url}
+              onError={() => {
+                const note = document.querySelector('.dnote');
+                if (note) note.textContent = "Demo failed to load — the site may block embedding. Use \"Open in new tab\".";
+              }}
             />
             <div className="dnote">
               If the demo stays blank, the site blocks embedding. Use â€œOpen in new

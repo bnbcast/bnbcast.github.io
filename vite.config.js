@@ -13,6 +13,7 @@ export default defineConfig({
         preventiveMaintenance: "BBPVP/JadwalTahunan-PM/index.html",
         mpu6050: "BBPVP/MPU6050/index.html",
         autodeskInventor: "BBPVP/AutodeskInventor/index.html",
+        newspaper: "newspaper/index.html",
       },
     },
   },
