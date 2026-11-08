@@ -582,7 +582,7 @@ function App() {
                 aria-label="Toggle light or dark theme"
                 onClick={toggleTheme}
               >
-                {theme === "dark" ? "â˜¾" : "â˜€"}
+                {theme === "dark" ? "☾" : "☀"}
               </button>
             </li>
           </ul>
