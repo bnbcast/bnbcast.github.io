@@ -4,4 +4,12 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   base: "./",
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: {
+        portfolio: "index.html",
+        newspaper: "newspaper/index.html",
+      },
+    },
+  },
 });
