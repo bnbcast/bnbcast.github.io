@@ -96,6 +96,16 @@
         cursor: pointer;
         font-size: 15px;
       }
+      .nav-toggle {
+        display: none;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font: 500 13px var(--mono);
+        cursor: pointer;
+      }
       .hero {
         padding: 96px 0 72px;
       }
@@ -226,36 +236,6 @@
         border-radius: 99px;
         padding: 6px 14px;
         font: 500 13px var(--mono);
-      }
-      .preview-placeholder {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        color: var(--accent);
-        font-size: 48px;
-        transition: color var(--transition);
-      }
-      .preview-placeholder:hover {
-        color: var(--accent-hover);
-      }
-      .preview iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 1280px;
-        height: 800px;
-        border: 0;
-        transform-origin: 0 0;
-        pointer-events: none;
-        background: #fff;
-        opacity: 0;
-        transition: opacity 0.5s;
-      }
-      .preview iframe.on {
-        opacity: 1;
       }
       .hit {
         position: absolute;
@@ -581,8 +561,36 @@
         border-top: 1px solid var(--line);
       }
       @media (max-width: 640px) {
-        nav ul li:not(:last-child) {
+        nav .wrap {
+          position: relative;
+        }
+        .nav-toggle {
+          display: block;
+        }
+        nav ul {
           display: none;
+          position: absolute;
+          top: 58px;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0;
+          padding: 8px 24px 12px;
+          background: var(--bg);
+          border-bottom: 1px solid var(--line);
+        }
+        nav ul.open {
+          display: flex;
+        }
+        nav ul li {
+          padding: 8px 0;
+        }
+        nav ul li:last-child {
+          align-self: flex-end;
+        }
+        nav ul a {
+          display: block;
         }
         .hero {
           padding: 64px 0 48px;

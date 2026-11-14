@@ -8,12 +8,11 @@ const CONFIG = {
   name: "Zaky Azhari",
   role: "Junior Developer",
   headline: "I build practical tools—and show how they work.",
-    pitch:
-    "Software engineering graduate building interactive browser demos, scheduling tools, and engineering explainers. This portfolio and its nine project showcases are built with React 19 and Vite 6. I care about clear interfaces, useful logic, and honest demos you can try.",
+  pitch:
+    "Software engineering graduate building interactive browser tools and engineering projects, from scheduling and statistics to ESP32 telemetry. I care about clear interfaces, useful logic, and demos that show what is simulated versus connected to hardware.",
   status: "Open to junior software and technical roles",
   accent: "#7c8cff",
   theme: "dark",
-  liveThumbs: false,
   activity: { username: githubUsername, max: 6 },
   sections: ["projects", "activity", "skills", "about", "contact"],
   links: {
@@ -29,7 +28,7 @@ const CONFIG = {
         "Real hardware, end to end: an ESP32 DevKit running PlatformIO firmware reads ACS712 current, MPU-6050 tilt and a GPS fix, then publishes to an MQTT broker every 500 ms. A MapLibre dashboard subscribes in the browser and plots the live trail, speed, odometer, address lookup and link health.",
       stack: ["C++", "PlatformIO", "ESP32", "MQTT", "MapLibre"],
       repo: "https://github.com/bnbcast/esp32-monitoring-pio",
-      image: "",
+      image: "/images/esp32-live-telemetry.jpg",
       demo: {
         type: "iframe",
         url: "https://bnbcast.github.io/esp32-monitoring-pio/",
@@ -42,7 +41,7 @@ const CONFIG = {
         "Works out how many parallel AI attempts you need for at least one to fix a bug, with every step of the math shown.",
       stack: ["JavaScript", "Probability", "Data viz"],
       repo: "https://github.com/bnbcast/InferenceTimeCalc",
-      image: "",
+      image: "/images/inference-time-calculator.jpg",
       demo: {
         type: "iframe",
         url: "https://bnbcast.github.io/InferenceTimeCalc/",
@@ -55,14 +54,13 @@ const CONFIG = {
         "Ranks the words that give away AI-written text by comparing word frequencies against human answers, using Laplace smoothing.",
       stack: ["JavaScript", "Statistics", "Data viz"],
       repo: "https://github.com/bnbcast/Word-Detective",
-      image: "",
+      image: "/images/word-detective.jpg",
       demo: {
         type: "iframe",
         url: "https://bnbcast.github.io/Word-Detective/",
       },
     },
     {
-      featured: true,
       title: "Preventive Maintenance Scheduler",
       problem:
         "Moves an Excel-based preventive maintenance cycle onto the web, with an asset register, load view and a read-only CLI-style demo. In English and Indonesian.",
@@ -75,7 +73,6 @@ const CONFIG = {
       },
     },
     {
-      featured: true,
       title: "MPU-6050 + ESP32 Motion Lab",
       problem:
         "Explore a virtual MPU-6050 in 3D, rotate and shake the board, inspect simulated accelerometer and gyroscope readings, and learn how the ESP32 sensor sketch and separate Control Center fit together.",
@@ -88,7 +85,6 @@ const CONFIG = {
       },
     },
     {
-      featured: true,
       title: "ESP32 ACS712 Current Monitor",
       problem:
         "A browser-based instrumentation lab that simulates an ESP32 reading current through an ACS712 Hall-effect sensor, with a 3D wiring bench built in Three.js, step-by-step experiment flow, and a Google Sheets logging pipeline.",
@@ -101,7 +97,6 @@ const CONFIG = {
       },
     },
     {
-      featured: true,
       title: "The Daily Digest — Tech Newspaper",
       problem:
         "A browser-based newspaper that consumes the daily Hacker News digest plus five niche tech sources (Lobste.rs, Ars Technica, Hackaday, Dev.to, Stack Overflow Blog), rendered in a classic multi-column newspaper layout with print-ready CSS.",
@@ -114,7 +109,6 @@ const CONFIG = {
       },
     },
     {
-      featured: true,
       title: "Moto G45 5G Bootloop Fix",
       problem:
         "Complete diagnosis and repair guide for the Moto G45 5G (XT2363-9, codename fogos) 2-minute bootloop caused by corrupt modem NV in modemst1/modemst2. Fix: unlock bootloader, fastboot erase modemst1 + modemst2, modem rebuilds NV from golden fsg partition. Verified stable with zero crashes, LTE working, IMEI intact.",
@@ -181,27 +175,7 @@ function getInitialTheme() {
 }
 
 function ProjectPreview({ project, onOpen }) {
-  const previewRef = useRef(null);
-  const [loaded, setLoaded] = useState(false);
-  const [iframeError, setIframeError] = useState(false);
-  const [previewLoaded, setPreviewLoaded] = useState(false);
   const demo = project.demo;
-
-  useEffect(() => {
-    const target = previewRef.current;
-    if (!target) return;
-
-    const iframe = target.querySelector("iframe");
-    if (!iframe) return;
-
-    const resize = () => {
-      iframe.style.transform = `scale(${target.clientWidth / 1280})`;
-    };
-    resize();
-    const observer = new ResizeObserver(resize);
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, []);
 
   let content;
   if (demo?.type === "video" && demo.url) {
@@ -223,35 +197,8 @@ function ProjectPreview({ project, onOpen }) {
   }
 
   return (
-    <div className="preview" ref={previewRef}>
+    <div className="preview">
       {content}
-      {demo?.url && demo.type !== "video" && CONFIG.liveThumbs && project.thumb !== false && (
-        <>
-          <iframe
-            title={`${project.title} live preview`}
-            tabIndex={-1}
-            aria-hidden="true"
-            sandbox="allow-scripts allow-same-origin"
-            src={previewLoaded && !iframeError ? demo.url : undefined}
-            className={loaded ? "on" : ""}
-            onLoad={() => setLoaded(true)}
-            onError={() => setIframeError(true)}
-          />
-          {!previewLoaded && (
-            <div className="preview-placeholder" onClick={() => setPreviewLoaded(true)}>
-              <i class="fas fa-play-circle" style={{ color: "var(--accent)", cursor: "pointer" }} />
-            </div>
-          )}
-          {iframeError && (
-            <div className="iframe-fallback" style={{
-              position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'var(--surface)', color: 'var(--muted)', fontSize: '13px', padding: '16px', textAlign: 'center'
-            }}>
-              Preview unavailable — click "Run live demo" to open in new tab
-            </div>
-          )}
-        </>
-      )}
       {demo?.type === "iframe" && (
         <>
           <button
@@ -260,7 +207,7 @@ function ProjectPreview({ project, onOpen }) {
             aria-label={`Run live demo of ${project.title}`}
             onClick={() => onOpen(project)}
           />
-          <span className="play">{iframeError ? "Open live demo" : "Run live demo"}</span>
+          <span className="play">Run live demo</span>
         </>
       )}
       {demo?.type === "link" && demo.url && (
@@ -419,9 +366,9 @@ function ActivitySection() {
   return (
     <section id="activity">
       <div className="wrap">
-        <h2>Recent activity</h2>
+        <h2>Recently updated repositories</h2>
         <p className="sub">
-          Latest commits across my public repositories, pulled live from GitHub.
+          Public repositories with recent pushes, pulled live from GitHub.
         </p>
         {items?.length ? (
           <>
@@ -437,7 +384,7 @@ function ActivitySection() {
                     <a href={item.repoUrl} target="_blank" rel="noopener">
                       {item.repo}
                     </a>
-                    <span>Latest commit</span>
+                    <span>Last updated</span>
                     <time dateTime={item.at}>{timeAgo(item.at)}</time>
                   </div>
                   <p className="msg">
@@ -464,6 +411,7 @@ function ActivitySection() {
 
 function App() {
   const [theme, setTheme] = useState(getInitialTheme);
+  const [navOpen, setNavOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState("All");
   const [expanded, setExpanded] = useState(false);
@@ -535,15 +483,25 @@ function App() {
 
   return (
     <>
-      <nav>
+      <nav aria-label="Primary">
         <div className="wrap">
           <a className="brand" href="#top">
             ~/{CONFIG.name.toLowerCase().replace(/\s+/g, "-")}
           </a>
-          <ul>
+          <button
+            className="nav-toggle"
+            type="button"
+            aria-label={navOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={navOpen}
+            aria-controls="site-nav-links"
+            onClick={() => setNavOpen((open) => !open)}
+          >
+            {navOpen ? "Close" : "Menu"}
+          </button>
+          <ul id="site-nav-links" className={navOpen ? "open" : ""}>
             {navLinks.map((section) => (
               <li key={section}>
-                <a href={`#${section}`}>
+                <a href={`#${section}`} onClick={() => setNavOpen(false)}>
                   {section[0].toUpperCase() + section.slice(1)}
                 </a>
               </li>
@@ -594,10 +552,9 @@ function App() {
             <div className="wrap">
               <h2>Projects</h2>
               <p className="sub">
-                Browse deployed demos and source code. Interactive previews load as
-                needed; projects that simulate sensor readings or hardware controls
-                are labeled clearly. The portfolio and all eight project showcases
-                are built with React 19 and Vite 6.
+                Browse deployed projects, demos, and source code. Some demos use
+                simulated readings; others connect to hardware. Each project is
+                labeled so you can tell which is which.
               </p>
               <div className="tools">
                 <input
@@ -707,7 +664,7 @@ function App() {
       </main>
 
       <footer>
-        <div className="wrap">Â© {new Date().getFullYear()} {CONFIG.name}</div>
+        <div className="wrap">© {new Date().getFullYear()} {CONFIG.name}</div>
       </footer>
 
       <dialog
