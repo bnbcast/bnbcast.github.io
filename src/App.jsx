@@ -101,7 +101,7 @@ const CONFIG = {
       problem:
         "A browser-based newspaper that consumes the daily Hacker News digest plus five niche tech sources (Lobste.rs, Ars Technica, Hackaday, Dev.to, Stack Overflow Blog), rendered in a classic multi-column newspaper layout with print-ready CSS.",
       stack: ["React 19", "Vite 6", "RSS", "GitHub Actions", "GitHub Pages"],
-      repo: "https://github.com/bnbcast/hndaily-digest",
+      repo: "https://github.com/bnbcast/bnbcast.github.io/tree/main/newspaper",
       image: "",
       demo: {
         type: "iframe",
