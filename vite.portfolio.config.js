@@ -8,7 +8,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         portfolio: "index.html",
-        newspaper: "newspaper/index.html",
       },
     },
   },

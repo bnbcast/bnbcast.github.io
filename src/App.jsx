@@ -6,11 +6,11 @@ import {
 
 const CONFIG = {
   name: "Zaky Azhari",
-  role: "Junior Developer",
+  role: "Software Developer",
   headline: "I build practical tools—and show how they work.",
   pitch:
     "Software engineering graduate building interactive browser tools and engineering projects, from scheduling and statistics to ESP32 telemetry. I care about clear interfaces, useful logic, and demos that show what is simulated versus connected to hardware.",
-  status: "Open to junior software and technical roles",
+  status: "Open to software development and technical roles",
   accent: "#7c8cff",
   theme: "dark",
   activity: { username: githubUsername, max: 6 },
@@ -99,13 +99,13 @@ const CONFIG = {
     {
       title: "The Daily Digest — Tech Newspaper",
       problem:
-        "A browser-based newspaper that consumes the daily Hacker News digest plus five niche tech sources (Lobste.rs, Ars Technica, Hackaday, Dev.to, Stack Overflow Blog), rendered in a classic multi-column newspaper layout with print-ready CSS.",
-      stack: ["React 19", "Vite 6", "RSS", "GitHub Actions", "GitHub Pages"],
-      repo: "https://github.com/bnbcast/bnbcast.github.io/tree/main/newspaper",
+        "A browser-based newspaper for the daily Hacker News digest, rendered in a classic multi-column layout with print-ready CSS.",
+      stack: ["React 19", "Vite 6", "Hacker News API", "GitHub Actions", "GitHub Pages"],
+      repo: "https://github.com/bnbcast/hndaily-digest",
       image: "",
       demo: {
         type: "iframe",
-        url: "https://bnbcast.github.io/newspaper/",
+        url: "https://bnbcast.github.io/hndaily-digest/",
       },
     },
     {
@@ -454,7 +454,7 @@ function App() {
   useEffect(() => {
     document.documentElement.style.setProperty("--accent", CONFIG.accent);
     document.documentElement.dataset.theme = theme;
-    document.title = `${CONFIG.name} — ${CONFIG.role}`;
+    document.title = `${CONFIG.name} | ${CONFIG.role}`;
   }, [theme]);
 
   useEffect(() => {

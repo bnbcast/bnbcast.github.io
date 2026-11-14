@@ -3,9 +3,10 @@
 The portfolio and its five standalone web projects use React and Vite. Each
 project keeps its own visual design and functionality.
 
-The Daily Digest web app source is in `newspaper/`. The separate
-`bnbcast/hndaily-digest` repository contains the daily digest generator and
-Markdown data consumed by the app.
+The Daily Digest web app, digest generator, and Markdown data are maintained in
+the standalone [bnbcast/hndaily-digest](https://github.com/bnbcast/hndaily-digest)
+repository. Its site is published at
+https://bnbcast.github.io/hndaily-digest/.
 
 ## Run locally
 
